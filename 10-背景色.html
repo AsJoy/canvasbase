@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+	<title>无标题文档</title>
+    <style>
+    	body{ background:#000000; }
+		canvas{ background:#FFFFFF}
+    </style>
+    <script>
+    	
+		window.onload = function(){
+			
+			var oCs = document.getElementById("cs");
+			var graphic = oCs.getContext("2d");
+			var image = new Image();
+			
+			image.onload = function(){
+				/*  repeat repeat-x repeat-y no-repeat */
+				var bg = graphic.createPattern(this,"repeat") 
+				graphic.fillStyle = bg;
+				graphic.fillRect(0,0,300,300);
+			}
+			
+			image.src="33.jpg";
+			
+		}
+    </script>
+</head>
+
+<body>
+	<!--使用 width 和 height等属性直接复制 不用style 方式辅助 -->
+    <!--默认：宽300 高150-->
+    <canvas id="cs" width="400" height="400">
+    	<span>您的浏览器版本过低，无法使用cavas功能 请更新浏览器或使用chrome或者firefox等主流浏览器</span>
+    </canvas>
+</body>
+</html>

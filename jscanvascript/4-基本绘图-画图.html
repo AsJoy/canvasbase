@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+<style>
+body{ background:black;}
+#canvas_1{ background:white;}
+#img1{ background:white;}
+</style>
+<script src="../jCanvaScript.1.5.18.min.js"></script>
+<script>
+	window.onload = function(){
+		onload_1("canvas_1")
+		
+	}
+	function onload_1(idName){
+		
+		var image = new Image();
+		image.onload=function(){
+			jc.start(idName);
+			jc.image(this,0,0,100,100);	
+			/* 截图 */
+			jc.image(this,100,100,100,100,100,100,1000,700);	
+			jc.start(idName);
+		}
+		image.src="../33.jpg";
+		
+	}
+</script>	
+</head>
+
+<body>
+	<canvas id="canvas_1" width="400" height="400"></canvas>
+</body>
+</html>

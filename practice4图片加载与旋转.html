@@ -1,0 +1,327 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+	<title>无标题文档</title>
+    
+    <style>
+		html{ font-size:12px; font-family:Arial "微软雅黑";}
+		a{ text-decoration:none ; color:#000;}
+		ul{ list-style:none; margin:0; padding:0;}
+    	body{ background: url(33.jpg) 0 0; background-size: 100%; background-attachment:fixed }
+		#box { width:550px; height: 480px; background:#fff; border: 2px solid #FF6600; margin-top:30px;   }
+		
+		.content{ width:550px; height: 385px; padding: 0 10px;margin-top: 40px; *zoom:1 }
+		.content:after{ content:""; display:block; clear:both;}
+		.srcImage{ width: 385px; height:100%; margin-right:5px; background:#F2F2F5; float:left; position: relative; }
+		.srcImage canvas{ position:absolute; left: 0; right:0; bottom:0; top:0; margin:auto; box-sizing:border-box;   }
+		.scanf{ width:135px; height:100%; margin-left:5px; background:#F2F2F5; float: left; text-align:center; color: #666666  }
+		.scanf li{ text-align:center }
+		
+		#forUpload{ width: 200px; text-align:center; color:#FF6600; height: 30px; line-height: 30px;  background: #ddd;background-image: -webkit-linear-gradient(left,blue,red);background-image: -moz-linear-gradient(top,#ddd,#f1f1f1);background-image: linear-gradient(left,blue,red); display: block; border-radius: 5px; }
+		.btn{ background: #fff; padding: 4px 12px; font-size:12px; border: 1px solid #ddd; border-radius: 3px;  color: #665; position: absolute; bottom: 10px; left: 10px; }
+		
+		
+		
+    </style>
+    <script>
+    	
+		window.onload = function(){
+			
+			
+			
+			/* 上传文件的 input */
+			var oFile = document.getElementById("upload");
+			/*oCs 的父级*/
+			var oCsWrapper = document.getElementById("csWrapper");
+			/* 画图 */
+			var oCs = document.getElementById("cs");
+			
+			var graphic = oCs.getContext("2d"); 
+			
+			/* 三个预览图片的 不同大小的图片 */
+			var scanfCanvas1 = document.getElementById("scanf1");
+			var scanfCanvas2 = document.getElementById("scanf2");
+			var scanfCanvas3 = document.getElementById("scanf3");
+			
+			var scanfGC1 = scanfCanvas1.getContext("2d");
+			var scanfGC2 = scanfCanvas2.getContext("2d");
+			var scanfGC3 = scanfCanvas3.getContext("2d");
+			
+			/* 记录上传的照片 */
+			var image = new Image();
+			/* 旋转图片的按钮  */
+			var oChangeImgDeg = document.getElementById("changeImgDeg");
+			/* 记录当前旋转的度数*/
+			var iNow = 0;
+			/* 控制图片裁剪的canvas */
+			var oC = document.getElementById('canvas_1');
+			/* 得到2d画布 */
+			var oGC = oC.getContext('2d');
+			
+			/* 开始裁剪的坐标 */
+			var oStartPoint;
+			
+			/* 存放裁剪的imgDate的信息 */
+			var oImg;
+			
+			
+			
+			
+			
+			oFile.onchange = function( ev ){
+				var srcFile = this.files;
+				
+				for( var i = 0 ; i < srcFile.length ; i ++ ){
+					
+					if(srcFile[i].type.match(/^(image\/)/)){
+						var fr = new FileReader();
+						
+						fr.readAsDataURL(srcFile[i]);
+						
+						fr.onload = function(){
+							
+							image.src=this.result;
+							
+								
+						}
+					}
+					
+				}
+				
+			}
+			
+			image.onload=function(){
+				resizeCanvas(this,this.width, this.height);	
+				draw( this );
+			}
+			
+			function resizeCanvas( imgObj,iWidth,iHeigt ){
+				
+				//alert(iWidth+","+iHeigt)
+				if( iWidth/iHeigt >= oCsWrapper.offsetWidth/oCsWrapper.offsetHeight ){
+					
+					oCs.width = oCsWrapper.offsetWidth;
+					oCs.height = iHeigt*oCsWrapper.offsetWidth/iWidth;
+					
+				}else{
+					oCs.height = oCsWrapper.offsetHeight;
+					oCs.width = iWidth*oCsWrapper.offsetHeight/iHeigt;
+				}
+				oC.width = oCs.width;
+				oC.height = oCs.height;
+				oGC.fillStyle = "rgba(255,255,255,.5)"
+				oGC.fillRect(0,0,oC.width,oC.height);
+				
+			}
+			
+			function draw(obj){
+				graphic.drawImage(obj,0,0,oCs.width,oCs.height);
+				oChangeImgDeg.style.display="block";
+			}
+			
+			oChangeImgDeg.onclick = function(){
+				
+				if( iNow == 3 ){
+					iNow = 0;	
+				}else{
+					iNow ++;	
+				}
+				
+				changeImgDeg()
+			}
+			
+			function changeImgDeg(){
+				graphic.save();
+				switch (iNow){
+					case 1:
+						resizeCanvas(image,image.height,image.width);
+						graphic.rotate(90*Math.PI/180);
+						graphic.drawImage(image,0,-oCs.width,oCs.height,oCs.width);
+					break;
+					
+					case 2:
+						resizeCanvas(image,image.width,image.height);
+						graphic.rotate(180*Math.PI/180);
+						graphic.drawImage(image,-oCs.width,-oCs.height,oCs.width,oCs.height);
+					break;
+					
+					case 3:
+						resizeCanvas(image,image.height,image.width);
+						graphic.rotate(270*Math.PI/180);
+						graphic.drawImage(image, -oCs.height , 0 ,oCs.height,oCs.width);
+					break;
+					
+					case 0:
+						resizeCanvas(image,image.width,image.height);
+						graphic.drawImage(image, 0 , 0 ,oCs.width,oCs.height);
+					break;	
+				
+				}
+				graphic.restore();
+				
+			}
+			
+			/*  图片裁剪 */
+			
+		
+		
+		
+		
+		oC.onmousedown=function( ev ){
+			ev = ev || window.event;
+			
+			oStartPoint = { left: ev.pageX-oC.offsetLeft-oC.parentNode.offsetLeft, top:ev.pageY-oC.offsetTop-oC.parentNode.offsetTop};
+			console.log(oStartPoint)
+			oC.onmousemove=mouseMove;
+		}
+		
+		function mouseMove(ev){
+			
+			ev = ev || window.event;
+			
+			var oNowPoint =  { left: ev.pageX-oC.offsetLeft-oC.parentNode.offsetLeft, top:ev.pageY-oC.offsetTop-oC.parentNode.offsetTop};
+			
+			var ioffsetX = Math.min(oStartPoint.left,oNowPoint.left);
+			var ioffsetY = Math.min(oStartPoint.top,oNowPoint.top);
+			
+			var iWidth = Math.abs(oStartPoint.left-oNowPoint.left);
+			var iHeight = Math.abs(oStartPoint.top-oNowPoint.top);
+			oGC.clearRect(0,0,oC.width,oC.height);
+			oGC.fillRect(0,0,oC.width,oC.height);
+			oGC.clearRect(ioffsetX,ioffsetY,iWidth,iHeight);
+			
+			document.onmouseup = mouseUp;
+		}
+		
+		function mouseUp(ev){
+			ev = ev || window.event;
+			var oNowPoint =  { left: ev.pageX-oC.offsetLeft-oC.parentNode.offsetLeft, top:ev.pageY-oC.offsetTop-oC.parentNode.offsetTop};
+			
+			var ioffsetX = Math.min(oStartPoint.left,oNowPoint.left);
+			var ioffsetY = Math.min(oStartPoint.top,oNowPoint.top);
+			
+			var iWidth = Math.abs(oStartPoint.left-oNowPoint.left);
+			var iHeight = Math.abs(oStartPoint.top-oNowPoint.top);
+			oGC.clearRect(0,0,oC.width,oC.height);
+			oGC.fillRect(0,0,oC.width,oC.height);
+			oGC.clearRect(ioffsetX,ioffsetY,iWidth,iHeight);
+			
+			oImg = graphic.getImageData(ioffsetX,ioffsetY,iWidth,iHeight);
+				
+			var desImg1 = graphic.createImageData(scanfCanvas1.width,scanfCanvas1.height)
+			var desImg2 = graphic.createImageData(scanfCanvas2.width,scanfCanvas2.height)
+			var desImg3 = graphic.createImageData(scanfCanvas3.width,scanfCanvas3.height)
+			
+			
+			changeSize( oImg , desImg1 );
+			changeSize( oImg , desImg2 );
+			changeSize( oImg , desImg3 );
+			
+			scanfGC1.putImageData(desImg1,0,0)
+			scanfGC2.putImageData(desImg2,0,0)
+			scanfGC3.putImageData(desImg3,0,0)
+			oC.onmousemove = null
+			oC.onmouseup = null;	
+		}
+			
+			/*  图片处理 */			
+			function getXY(imageData, x , y){
+				var width = imageData.width; 	
+				var result = [];
+				result[0] = imageData.data[(width*y+x)*4];
+				result[1] = imageData.data[(width*y+x)*4+1];
+				result[2] = imageData.data[(width*y+x)*4+2];
+				result[3] = imageData.data[(width*y+x)*4+3];
+				
+				return result;	
+					
+			}
+			
+			function setXY(imageData, x , y , result){
+				var width = imageData.width; 
+				imageData.data[(width*y+x)*4] = result[0];
+				imageData.data[(width*y+x)*4+1] = result[1] ;
+				imageData.data[(width*y+x)*4+2] = result[2] ;
+				imageData.data[(width*y+x)*4+3] = result[3] ;
+					
+			}
+			
+			function changeSize(src,des){
+				
+				var srcWidth = src.width;
+				var srcHeight = src.height;
+				
+				var desWidth = des.width;
+				var desHeight = des.height;
+				
+				
+				var fw = srcWidth / desWidth;
+ 				var fh = srcHeight / desHeight;
+				 
+			   	for(var y=0; y<desHeight; y++)
+				{
+					var y0 = Math.floor((y * fh));
+					
+					for(var x=0; x<desWidth; x++)
+					{
+						var x0 =  Math.floor((x * fw));
+					
+						setXY(des,x,y,getXY(src,x0,y0));
+					}
+				}
+					
+			}
+			
+		}
+    </script>
+</head>
+
+<body>
+	<!--使用 width 和 height等属性直接复制 不用style 方式辅助 -->
+    <!--默认：宽300 高150-->
+    
+    <div>
+    	<input  type="file" id="upload"  style="display:none"/>
+        <label for="upload" id="forUpload">
+        	上传照片
+        </label> 
+        
+    </div>
+    <div id="box">
+    	<div class="content">
+        	<div class="srcImage" id="csWrapper">
+            	<canvas id="cs" width="0" height="0">
+                    <span>您的浏览器版本过低，无法使用cavas功能 请更新浏览器或使用chrome或者firefox等主流浏览器</span>
+                </canvas>
+                
+                <canvas id="canvas_1" width="0" height="0"></canvas>
+                
+            </div>
+            <div class="scanf">
+            	<p>结果预览</p>
+                <ul>
+                	<li>
+                    	<canvas id="scanf1" width="135" height="135">
+                        	<span>您的浏览器版本过低，无法使用cavas功能 请更新浏览器或使用chrome或者firefox等主流浏览器</span>
+                        </canvas>
+                    </li>
+                    <li>
+                    	<canvas id="scanf2" width="85" height="85">
+                        	<span>您的浏览器版本过低，无法使用cavas功能 请更新浏览器或使用chrome或者firefox等主流浏览器</span>
+                        </canvas>
+                    </li>
+                    <li>
+                    	<canvas id="scanf3" width="50" height="50">
+                        	<span>您的浏览器版本过低，无法使用cavas功能 请更新浏览器或使用chrome或者firefox等主流浏览器</span>
+                        </canvas>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <a href="javascript:" class="btn" id="changeImgDeg" style="display:none">90°旋转</a>
+         
+    </div>
+    
+</body>
+</html>

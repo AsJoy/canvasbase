@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+	<title>无标题文档</title>
+    <style>
+    	body{ background:#000000; }
+		canvas{ background:#FFFFFF}
+    </style>
+    <script>
+    	
+		window.onload = function(){
+			var oCs = document.getElementById("cs");
+			
+			var graphic = oCs.getContext("2d");
+			
+			
+			
+			function drawtable(){
+				
+				var x = 200,
+				y=200,
+				r=150,
+				courrent=new Date(),				
+				iSec = (-90+courrent.getSeconds()*6)*Math.PI/180,
+				iMin = (-90+(courrent.getMinutes()+courrent.getSeconds()/60)*6)*Math.PI/180,
+				iHour = (-90+(courrent.getHours()+courrent.getMinutes()/60)*30)*Math.PI/180;
+				graphic.fillStyle="#000";
+				graphic.strokeStyle="#000";
+				graphic.lineWidth=1;
+				graphic.beginPath();	
+				for( var i =0 ; i < 60; i ++ ){
+					graphic.moveTo(x,y);
+					graphic.arc(x,y,r,6*i*Math.PI/180,6*(i+1)*Math.PI/180,false);
+					
+				}
+				graphic.closePath();
+				graphic.stroke();
+				
+				graphic.beginPath();	
+				graphic.fillStyle="#fff";
+				graphic.arc(x,y,r*0.94,0,360,false);
+				graphic.closePath();	
+				graphic.fill();
+				
+				graphic.lineWidth=2;
+				graphic.beginPath();	
+				for( var i =0 ; i < 12; i ++ ){
+					graphic.moveTo(x,y);
+					graphic.arc(x,y,r,30*i*Math.PI/180,(30*i)*Math.PI/180,false);
+				}
+				graphic.closePath();
+				graphic.stroke();
+				
+				graphic.beginPath();	
+				graphic.fillStyle="#fff";
+				graphic.arc(x,y,r*0.9,0,360,false);
+				graphic.closePath();	
+				graphic.fill();
+				
+				graphic.lineWidth=5;
+				graphic.beginPath();
+				graphic.moveTo(x,y);	
+				graphic.arc(x,y,r*0.5,iHour,iHour,false);
+				graphic.closePath();
+				graphic.stroke();
+				
+				graphic.lineWidth=4;
+				graphic.beginPath();
+				graphic.moveTo(x,y);	
+				graphic.arc(x,y,r*0.6,iMin,iMin,false);
+				graphic.closePath();
+				graphic.stroke();
+				
+				graphic.lineWidth=2;
+				graphic.strokeStyle="#c30";
+				graphic.beginPath();
+				graphic.moveTo(x,y);	
+				graphic.arc(x,y,r*	0.7,iSec,iSec,false);
+				graphic.closePath();
+				graphic.stroke();
+				
+				graphic.beginPath();
+				graphic.fillStyle="#c30";
+				graphic.moveTo(x,y);	
+				graphic.arc(x,y,10,0,360,false);
+				graphic.closePath();
+				graphic.fill();
+				
+				
+			}
+			drawtable();
+			
+			setInterval(drawtable,1000);
+		}
+    </script>
+</head>
+
+<body>
+	<!--使用 width 和 height等属性直接复制 不用style 方式辅助 -->
+    <!--默认：宽300 高150-->
+    <canvas id="cs" width="400" height="400">
+    	<span>您的浏览器版本过低，无法使用cavas功能 请更新浏览器或使用chrome或者firefox等主流浏览器</span>
+    </canvas>
+</body>
+</html>

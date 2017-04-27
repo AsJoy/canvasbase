@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+	<title>无标题文档</title>
+    <style>
+    	body{ background:#000000; }
+		canvas{ background:#FFFFFF}
+    </style>
+    <script>
+    	
+		window.onload = function(){
+			
+			var oCs = document.getElementById("cs");
+			var graphic = oCs.getContext("2d");
+			/* 第一点坐标半径   第二点坐标和半径 */
+			var obj = graphic.createRadialGradient(100,100,100,100,100,200);
+			/* 天添加填充样式 */
+			obj.addColorStop(0,"#fff");
+			obj.addColorStop(0.3,"red");
+			obj.addColorStop(0.8,"blue");
+			obj.addColorStop(1,"green");
+			
+			graphic.fillStyle=obj;
+			
+			graphic.fillRect(0,0,oCs.width,oCs.height);
+			
+			
+		}
+    </script>
+</head>
+
+<body>
+	<!--使用 width 和 height等属性直接复制 不用style 方式辅助 -->
+    <!--默认：宽300 高150-->
+    <canvas id="cs" width="400" height="400">
+    	<span>您的浏览器版本过低，无法使用cavas功能 请更新浏览器或使用chrome或者firefox等主流浏览器</span>
+    </canvas>
+</body>
+</html>

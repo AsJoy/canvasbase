@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+    <style>
+    	body{ background:#000000; }
+		canvas{ background:#FFFFFF}
+    </style>
+    
+    <script>
+    	window.onload=function(){
+			
+			var oCs = document.getElementById("cs");
+			
+			var graphics = oCs.getContext("2d");
+			
+			graphics.fillStyle="red";
+			
+			graphics.beginPath();
+			
+			graphics.rect(50.5,50.5,100,100);
+			
+			graphics.closePath();
+			
+			graphics.fill();		
+		
+		}
+    </script>
+</head>
+
+<body>
+
+	<canvas id="cs" width="400" height="400">
+    	<span>您的浏览器版本过低，无法使用cavas功能 请更新浏览器或使用chrome或者firefox等主流浏览器</span>
+    </canvas>
+</body>
+</html>

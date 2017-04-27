@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+	<title>无标题文档</title>
+    <style>
+    	body{ background:#000000; }
+		canvas{ background:#FFFFFF}
+    </style>
+    <script>
+    	
+		window.onload = function(){
+			var oCs = document.getElementById("cs");
+			
+			var graphic = oCs.getContext("2d");
+			
+			/*对应的参照物都是图形的左上角*/
+			
+			/* translate 也是会累加的 */
+			graphic.translate(50,50);
+			
+			graphic.translate(50,50);
+			
+			/* rotate 每次都会累加 */
+			graphic.rotate(45*Math.PI/180);
+			
+			/* scale 每次都会累加 */
+			graphic.scale(1.5,1.5);
+			
+			/*所以一般这种设置动画的时候都会使用save 和restore 方法*/
+			graphic.fillRect(0,0,100,100);
+							
+		}
+    </script>
+</head>
+
+<body>
+	<!--使用 width 和 height等属性直接复制 不用style 方式辅助 -->
+    <!--默认：宽300 高150-->
+    <canvas id="cs" width="400" height="400">
+    	<span>您的浏览器版本过低，无法使用cavas功能 请更新浏览器或使用chrome或者firefox等主流浏览器</span>
+    </canvas>
+</body>
+</html>

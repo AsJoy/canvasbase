@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+	<title>无标题文档</title>
+    <style>
+    	body{ background:#000000; }
+		canvas{ background:#FFFFFF}
+    </style>
+    <script>
+    	
+		window.onload = function(){
+			var oCs = document.getElementById("cs");
+			
+			var graphic = oCs.getContext("2d");
+			
+			var num = 0;
+			
+			var num2 = 0;
+			
+			var value = 1;
+			
+			
+			
+			function animate(){
+				
+				graphic.clearRect(0,0,oCs.width,oCs.height);
+				
+				num++;
+				
+				if( num2 == 200) {
+					value = -1;	
+				}else if( num2 == 1 ){
+					value = 1;
+					
+				}
+				
+				num2 += value;
+				
+				//alert(oCs.width)
+				graphic.save();
+				
+				graphic.translate(200,200);
+				
+				graphic.rotate(num*Math.PI/180);
+				
+				graphic.scale(num2/100,num2/100);
+				
+				graphic.translate(-50,-50);				
+				
+				graphic.fillRect(0,0,100,100);
+				
+				graphic.restore();
+				
+				
+			}
+			
+			setInterval(animate,100);
+		}
+    </script>
+</head>
+
+<body>
+	<!--使用 width 和 height等属性直接复制 不用style 方式辅助 -->
+    <!--默认：宽300 高150-->
+    <canvas id="cs" width="400" height="400">
+    	<span>您的浏览器版本过低，无法使用cavas功能 请更新浏览器或使用chrome或者firefox等主流浏览器</span>
+    </canvas>
+</body>
+</html>

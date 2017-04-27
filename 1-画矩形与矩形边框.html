@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+	<title>无标题文档</title>
+    <style>
+    	body{ background:#000000; }
+		canvas{ background:#FFFFFF}
+    </style>
+    <script>
+    	
+		window.onload = function(){
+			var oCs = document.getElementById("cs");
+			
+			var graphic = oCs.getContext("2d");
+			
+			graphic.fillStyle="red";
+			
+			/* 记得加边框 */
+			graphic.fillRect(50.5,50.5,100,100);
+			
+			graphic.strokeStyle="blue";
+			
+			graphic.lineWidth=12;
+			/*bevel 斜角 和 圆角 round */
+			graphic.lineJoin="bevel";
+			/* 主要用于划线时使用 round  圆角 和 square 伸长一部分 */
+			graphic.lineCap = "round";
+			
+			/*<!--画圆和边框顺序先后又区别-->*/
+			
+			graphic.strokeRect(50.5,50.5,100,100)
+		}
+    </script>
+</head>
+
+<body>
+	<!--使用 width 和 height等属性直接复制 不用style 方式辅助 -->
+    <!--默认：宽300 高150-->
+    <canvas id="cs" width="300" height="400">
+    	<span>您的浏览器版本过低，无法使用cavas功能 请更新浏览器或使用chrome或者firefox等主流浏览器</span>
+    </canvas>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+<style>
+body{ background:black;}
+#canvas_1{ background: blue}
+#img1{ background:white;}
+</style>
+<script src="../jCanvaScript.1.5.18.min.js"></script>
+<script>
+	
+	window.onload = function(){
+		
+		var oC = document.getElementById('canvas_1');
+		var oGC = oC.getContext('2d');
+		
+		oGC.fillStyle = "rgba(255,255,255,.5)"
+		oGC.fillRect(0,0,oC.width,oC.height);
+		
+		var oStartPoint;
+		oC.onmousedown=function( ev ){
+			ev = ev || window.event;
+			oStartPoint = { left: ev.pageX-oC.offsetLeft, top:ev.pageY-oC.offsetTop};
+			console.log(oStartPoint)
+			oC.onmousemove=mouseMove;
+		}
+		
+		function mouseMove(ev){
+			
+			ev = ev || window.event;
+			
+			var oNowPoint = { left: ev.pageX-oC.offsetLeft, top:ev.pageY-oC.offsetTop};
+			
+			var ioffsetX = Math.min(oStartPoint.left,oNowPoint.left);
+			var ioffsetY = Math.min(oStartPoint.top,oNowPoint.top);
+			
+			var iWidth = Math.abs(oStartPoint.left-oNowPoint.left);
+			var iHeight = Math.abs(oStartPoint.top-oNowPoint.top);
+			oGC.clearRect(0,0,oC.width,oC.height);
+			oGC.fillRect(0,0,oC.width,oC.height);
+			oGC.clearRect(ioffsetX,ioffsetY,iWidth,iHeight);
+			
+			oC.onmouseup = mouseUp;
+		}
+		
+		function mouseUp(ev){
+			ev = ev || window.event;
+			var oNowPoint = { left: ev.pageX-oC.offsetLeft, top:ev.pageY-oC.offsetTop};
+			
+			var ioffsetX = Math.min(oStartPoint.left,oNowPoint.left);
+			var ioffsetY = Math.min(oStartPoint.top,oNowPoint.top);
+			
+			var iWidth = Math.abs(oStartPoint.left-oNowPoint.left);
+			var iHeight = Math.abs(oStartPoint.top-oNowPoint.top);
+			oGC.clearRect(0,0,oC.width,oC.height);
+			oGC.fillRect(0,0,oC.width,oC.height);
+			oGC.clearRect(ioffsetX,ioffsetY,iWidth,iHeight);
+			
+			oC.onmousemove = null
+			oC.onmouseup = null;	
+		}
+		
+		
+		
+	}
+	
+</script>	
+</head>
+
+<body>
+	<canvas id="canvas_1" width="400" height="400"></canvas>
+</body>
+</html>

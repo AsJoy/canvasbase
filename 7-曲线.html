@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+	<title>无标题文档</title>
+    <style>
+    	body{ background:#000000; }
+		canvas{ background:#FFFFFF}
+    </style>
+    <script>
+    	
+		window.onload = function(){
+			var oCs = document.getElementById("cs");
+			
+			var graphic = oCs.getContext("2d");
+			
+			graphic.moveTo(200,200)
+			
+			/*  第一组坐标 控制dian  第二组坐标 终止点 半径  */
+			graphic.arcTo(100,100,100,200,50);
+			
+			graphic.moveTo(200,200);
+			
+			/*  最后一组坐标结束点 前面两组坐标控制点 */
+			graphic.bezierCurveTo(200,100,100,200,100,100);	
+			
+			graphic.stroke();				
+		}
+    </script>
+</head>
+
+<body>
+	<!--使用 width 和 height等属性直接复制 不用style 方式辅助 -->
+    <!--默认：宽300 高150-->
+    <canvas id="cs" width="400" height="400">
+    	<span>您的浏览器版本过低，无法使用cavas功能 请更新浏览器或使用chrome或者firefox等主流浏览器</span>
+    </canvas>
+</body>
+</html>

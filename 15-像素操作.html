@@ -1,0 +1,109 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+	<title>无标题文档</title>
+    <style>
+    	body{ background:#000000; }
+		canvas{ background:#FFFFFF}
+    </style>
+    <script>
+    	
+		window.onload = function(){
+			
+			var oCs = document.getElementById("cs");
+			var graphic = oCs.getContext("2d");
+			
+			var oCs1 = document.getElementById("cs1");
+			var graphic1 = oCs1.getContext("2d");
+			
+			var image = new Image();
+			
+			var desWidth = 100; 
+			var desHeight = 100;
+			
+			var oImg;
+			var desImg;
+			
+			image.onload = function(){
+				graphic.drawImage(this,0,0,200,200);
+				
+				/* 这里存的是一个4*100*100的长度的数组 ， 4表示该像素点的r,g ,b,a 的值 */
+				oImg = graphic.getImageData(0,0,200,200);
+				
+				desImg = graphic.createImageData(100,100)
+				
+				changeSize( oImg , desImg );
+				
+				graphic1.putImageData(desImg,0,0)
+				
+			}
+			
+			image.src="33.jpg";
+			
+			
+			function getXY(imageData, x , y){
+				var width = imageData.width; 	
+				var result = [];
+				result[0] = imageData.data[(width*x+y)*4];
+				result[1] = imageData.data[(width*x+y)*4+1];
+				result[2] = imageData.data[(width*x+y)*4+2];
+				result[3] = imageData.data[(width*x+y)*4+3];
+				
+				return result;	
+					
+			}
+			
+			function setXY(imageData, x , y , result){
+				var width = imageData.width; 
+				imageData.data[(width*x+y)*4] = result[0];
+				imageData.data[(width*x+y)*4+1] = result[1] ;
+				imageData.data[(width*x+y)*4+2] = result[2] ;
+				imageData.data[(width*x+y)*4+3] = result[3] ;
+					
+			}
+			
+			function changeSize(src,des){
+				
+				var srcWidth = src.width;
+				var srcHeight = src.height;
+				
+				var desWidth = des.width;
+				var desHeight = des.height;
+				
+				
+				var fw = srcWidth / desWidth;
+ 				var fh = srcHeight / desHeight;
+				 
+			   	for(var y=0; y<desHeight; y++)
+				{
+					var y0 = Math.floor((y * fh));
+					
+					for(var x=0; x<desWidth; x++)
+					{
+						var x0 =  Math.floor((x * fw));
+					
+						setXY(des,x,y,getXY(src,x0,y0));
+					}
+				}
+					
+			}
+			
+			
+			
+		}
+    </script>
+</head>
+
+<body>
+	<!--使用 width 和 height等属性直接复制 不用style 方式辅助 -->
+    <!--默认：宽300 高150-->
+    <canvas id="cs" width="400" height="400">
+    	<span>您的浏览器版本过低，无法使用cavas功能 请更新浏览器或使用chrome或者firefox等主流浏览器</span>
+    </canvas><br>
+    
+    <canvas id="cs1" width="100" height="100">
+    	<span>您的浏览器版本过低，无法使用cavas功能 请更新浏览器或使用chrome或者firefox等主流浏览器</span>
+    </canvas>
+</body>
+</html>
